@@ -14,8 +14,10 @@ def clean(downloads, sorted):
             if match.search(name):
                 tvList.append(name)
                 newPath = processTvShowName(name)
-                if not os.path.exists("/Users/kristinn/PycharmProjects/PRLA/PRLA_Python_V4/sorted/TV_shows/"+newPath):
-                    shutil.move(os.path.join(subdir, file), "/Users/kristinn/PycharmProjects/PRLA/PRLA_Python_V4/sorted/TV_shows/"+newPath)
+                if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
+                    shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
+            else:
+                shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
     for show in tvList:
         print(show)
     return
