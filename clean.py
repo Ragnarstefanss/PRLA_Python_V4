@@ -33,10 +33,12 @@ def clean(downloads, sorted):
             if foldersyntax.search(folder):
                 index = foldersyntax.search(folder).start()
                 name = folder[:index - 1]
-                if not os.path.exists(sorted + "/TV_shows/" + name):
-                    os.mkdir(sorted + "/TV_shows/" + name)
-                if not os.path.exists(sorted + "/TV_shows/" + name + "/" + folder[index:]):
-                    shutil.move(os.path.join(subdir, dir), sorted + "/TV_shows/" + name + "/" + folder[index:])
+                new_name = name.rstrip()
+                if not os.path.exists(sorted + "/TV_shows/" + new_name):
+                    os.mkdir(sorted + "/TV_shows/" + new_name)
+                if not os.path.exists(sorted + "/TV_shows/" + new_name + "/" + folder[index:]):
+                    shutil.move(os.path.join(subdir, dir), sorted + "/TV_shows/" + new_name + "/" + folder[index:])
+                    
     for subdir, dirs, files in os.walk(downloads):
         for file in files:
             name = file.title()
@@ -62,6 +64,7 @@ def clean(downloads, sorted):
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), sorted + "/unrecognized/"+file.title())
+                
     for show in tvList:
         print(show)
         
