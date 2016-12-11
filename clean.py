@@ -22,12 +22,12 @@ def clean(downloads, sorted):
                        "[Ss]eason {0,1}\d{1,2}[ -]{1,3}[Ee]pisode {0,1}\d{1,2}|#\d{1,3}|[Ss]\d{1,2}.([Ee]xtra)?([Ss]pecial)?)")
     partialdownloads = re.compile("\.Part$")
     tobedeleted = re.compile("\.[Jj]pg|\.[Rr]ar|\.[Zz]ip|\.[Ii]gnore|\.[Nn]fo|.[R]\d{1,3}|\.[Dd]at|\.[Pp]ng|\.[Ll]nk|\.[Ss]vf|\.[Ss]fv|\.[Mm]ta|"
-        "\.[Tt]xt|\.[Ss]tyle|\.[Tt]orrent")
+        "\.[Tt]xt|\.[Ss]tyle|\.[Tt]orrent|\.[Ss]mi$|\.[Pp]art?\d{1,2}$")
     audio = re.compile("\.[Mm]p3$|\.[Ww]av$")
 
     foldersyntax = re.compile("[Ss]eason[\. -]{0,1}\d{1,2}")
 
-    yearsyntax = re.compile("[\[\]\. -]{0,2}\d{4}")
+    yearsyntax = re.compile("[\[\]\.( -]{0,2}\d{4}")
 
     for subdir, dirs, files in os.walk(downloads):
         for dir in dirs:
@@ -72,12 +72,20 @@ def clean(downloads, sorted):
             #Filename strip
             if yearsyntax.search(name):
                 index = yearsyntax.search(name).start()
-                titletype = api(name[:index])
-                if titletype[0] != "None":
-                    if titletype[1] == "movie":
-                        if not os.path.exists(sorted + "/Movies/" + titletype[0]):
-                            shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + titletype[0])
+                name = name[:index]
+                take_out = ["_", "[", "]", ".", " -", " "]
+                for ch in take_out:
+                    name = name.replace(ch, "+")
+                if len(name) == len(name.encode()):
+                    titletype = api(name)
+                    if titletype[0] != "None":
+                        if titletype[1] == "movie":
+                            if not os.path.exists(sorted + "/Movies/" + titletype[0]):
+                                shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + file.title())
 
+                    elif titletype[1] == "series":
+                        if not os.path.exists(sorted + "/TV_shows/" + titletype[0]):
+                            shutil.move(os.path.join(subdir, file), sorted + "/TV_shows/" + file.title())
 def processTvShowName(name, seasons):
     
     #TODO: implementlll
