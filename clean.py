@@ -36,11 +36,12 @@ def clean(downloads, sorted):
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/audio/"+file.title())
             elif match.search(name):
                 index = match.search(name).start()
+                endindex = match.search(name).end()
                 print(name)
                 print(index)
                 tvList.append(name)
-                newPath = processTvShowName(name)
-                newName = "/" + name
+                newPath = processTvShowName(name[:index], name[index:endindex])
+                newName = name[:endindex]
                 #print (newName[:30])
                 if not os.path.exists(downloads + "/../sorted/TV_shows/" + newPath):
                     os.mkdir(downloads + "/../sorted/TV_shows/" + newPath)
@@ -52,7 +53,7 @@ def clean(downloads, sorted):
     for show in tvList:
         print(show)
         
-def processTvShowName(name):
+def processTvShowName(name, seasons):
     
     #TODO: implementlll
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
