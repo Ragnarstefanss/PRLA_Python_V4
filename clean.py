@@ -62,9 +62,10 @@ def clean(downloads, sorted):
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), sorted + "/unrecognized/"+file.title())
-    for show in tvList:
-        print(show)
-        
+    #for subdir, dirs, files in os.walk(sorted + "/unrecognized/"):
+     #   for file in files:
+
+
 def processTvShowName(name, seasons):
     
     #TODO: implementlll
@@ -86,3 +87,19 @@ def processTvShowName(name, seasons):
         
     return name.rstrip()
 
+
+def api(name):
+    url = str("http://www.omdbapi.com/?t=" + name)
+
+    read_data = urllib.request.urlopen(url)
+    load = json.loads(read_data.read().decode(read_data.info().get_param('charset') or 'utf-8'))
+
+    api_title = "None"
+    api_type = "None"
+    if load["Response"] == "True":
+        api_title = load["Title"]
+        api_type = load['Type']
+
+    else:
+        print('could not find tv series / movie %s' % name)
+    return (api_title, api_type)
