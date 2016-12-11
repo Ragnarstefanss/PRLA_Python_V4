@@ -9,7 +9,6 @@ def clean(downloads, sorted):
     for subdir, dirs, files in os.walk(downloads):
         for file in files:
             name = file.title()
-            #Simplify regex if time allows for it
             match = re.compile("(?!.*(\.[Jj]pg$|\.[Rr]ar$|\.[Zz]ip$|\.[Mm]p3$|\.[Ii]gnore$|\.[Nn]fo$|.[R]\d{1,3}$|\.[Dd]at$|"
                                "\.[Pp]ng$|\.[Ll]nk$|\.[Pp]ar[t\d*]$|\.[Ss]vf$|\.[Ss]fv$|\.[Mm]ta$|\.[Tt]xt$|"
                                "\.[Ww]av$))(\d{1,2}[Xx]\d{1,2}|\[\d{1,3}\.\d{1,3}\]|[Ee][Pp]\d{1,3}|- \d{2} -|- \d{2,3}|"
@@ -34,12 +33,13 @@ def clean(downloads, sorted):
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
-
+        
 def processTvShowName(name):
     #TODO: implement
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
+    #Bail á þetta að ofan, Hjalti segir að slík fegrun skuli teljast aukapunktur, en ekki vera default hegðun
     #Skila nafni skráar, nafni þáttar og seríunúmeri
-    #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
+    #Helst formatta skilagildi sem áframhald á pathi frá TV_shows
     return name
 
 
