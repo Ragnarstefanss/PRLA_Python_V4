@@ -35,8 +35,11 @@ def clean(downloads, sorted):
             elif match3.search(name):
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/audio/"+file.title())
             elif match.search(name):
+                index = match.search(name).start()
+                print(name)
+                print(index)
                 tvList.append(name)
-                newPath = name
+                newPath = processTvShowName(name)
                 newName = "/" + name
                 #print (newName[:30])
                 if not os.path.exists(downloads + "/../sorted/TV_shows/" + newPath):
@@ -93,8 +96,8 @@ def processTvShowName(name):
     else:
         print ('could not find tv series / movie %s' % name1)
 
-    if dada_listi != []:
-        print (dada_listi)
+    #if dada_listi != []:
+    #    print (dada_listi)
         
     return name
 
