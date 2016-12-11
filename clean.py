@@ -65,7 +65,7 @@ def clean(downloads, sorted):
                 index = episodesyntax.search(name).start()
                 endindex = episodesyntax.search(name).end()
                 tvList.append(name)
-                newPath = processTvShowName(name[:index], name[index:endindex])
+                newPath = processTvShowName(name[:index])
                 newName = name
 
                 if not os.path.exists(sorted + tvfolder + newPath):
@@ -99,22 +99,19 @@ def clean(downloads, sorted):
                             shutil.move(os.path.join(subdir, file), sorted + tvfolder + file.title())
 
 
-def processTvShowName(name, seasons):
-    #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
-    #Skila nafni skráar, nafni þáttar og seríunúmeri
-    #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
-    
+def processTvShowName(name):
+    # Array of items that are typically found in file names
     take_out = ["_", "[", "]", ".", " -"]
-    arr = []
+
+    # if there exists an item in name that should not be there then we have to replace it with whitespace
     for value in take_out:
         name = name.replace(value," ")
-        arr.append(name)
+    # if a file contains a year in it, like if the file is a movie
+    # then we have to remove it, so we can use the name as a parameter when using a api to imdb
     for i in range(1920, 2050):
         if str(i) in name:
             name = name.replace(str(i)," ")
-            arr.append(name)
-    
-
+    # We return the title of a movie/tv show and watch out that there is no space at the end of the name
     return name.rstrip()
 
 
