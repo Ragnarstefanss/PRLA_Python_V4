@@ -1,8 +1,10 @@
 import os
 import zipfile
 import shutil
-shutil.rmtree("downloads")
-shutil.rmtree("sorted")
+if os.path.exists("downloads"):
+    shutil.rmtree("downloads")
+if os.path.exists("sorted"):
+    shutil.rmtree("sorted")
 os.makedirs("sorted")
 os.makedirs("sorted/TV_shows")
 os.makedirs("sorted/unrecognized")

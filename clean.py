@@ -34,9 +34,6 @@ def clean(downloads, sorted):
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
-    for show in tvList:
-        print(show)
-    return
 
 def processTvShowName(name):
     #TODO: implement
