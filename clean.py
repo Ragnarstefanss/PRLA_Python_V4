@@ -1,6 +1,5 @@
 import os
 import re
-#import string
 import json
 import urllib.request
 import shutil
@@ -10,7 +9,7 @@ import shutil
 def clean(downloads, sorted):
     tvList = []
     # wow, so read. very understand
-    # Regular expressions, in order of execution, for: files with extensions that are to be deleted,
+    # These are regular expressions, in order of execution, for: files with extensions that are to be deleted,
     # .Part files, which are partial downloads and are therefore to be left alone
     # Files in audio formats, to be moved to sorted/audio
     # Files containing S01E01 or similar episodic syntax denoting that it is part of a series, to be put into sorted/TV_shows
@@ -29,6 +28,12 @@ def clean(downloads, sorted):
 
     yearsyntax = re.compile("[\[\]\.( -]{0,2}\d{4}")
 
+    tvfolder = "/TV_shows/"
+    audiofolder = "/audio/"
+    unsortedfolder = "/unrecognized/"
+    moviefolder = "/Movies/"
+
+    #loop through the folders, if any look like they contain whole seasons, move them, as they are, accordingly
     for subdir, dirs, files in os.walk(downloads):
         for dir in dirs:
             folder = dir.title()
@@ -36,40 +41,46 @@ def clean(downloads, sorted):
                 index = foldersyntax.search(folder).start()
                 name = folder[:index - 1]
                 new_name = name.rstrip()
-                if not os.path.exists(sorted + "/TV_shows/" + new_name):
-                    os.mkdir(sorted + "/TV_shows/" + new_name)
-                if not os.path.exists(sorted + "/TV_shows/" + new_name + "/" + folder[index:]):
-                    shutil.move(os.path.join(subdir, dir), sorted + "/TV_shows/" + new_name + "/" + folder[index:])
-                    
+
+                if not os.path.exists(sorted + tvfolder + new_name):
+                    os.mkdir(sorted + tvfolder + new_name)
+                if not os.path.exists(sorted + tvfolder + new_name + "/" + folder[index:]):
+                    shutil.move(os.path.join(subdir, dir), sorted + tvfolder + new_name + "/" + folder[index:])
+
+    #loop through the files, if it looks like a tv show, move it accordingly etc.
     for subdir, dirs, files in os.walk(downloads):
         for file in files:
             name = file.title()
+
             if tobedeleted.search(name):
                 os.remove(os.path.join(subdir, file))
+
             elif partialdownloads.search(name):
                 continue
+
             elif audio.search(name):
-                shutil.move(os.path.join(subdir, file), sorted + "/audio/"+file.title())
+                shutil.move(os.path.join(subdir, file), sorted + audiofolder +file.title())
+
             elif episodesyntax.search(name):
                 index = episodesyntax.search(name).start()
                 endindex = episodesyntax.search(name).end()
-                #print(name)
-                #print(index)
                 tvList.append(name)
                 newPath = processTvShowName(name[:index], name[index:endindex])
                 newName = name
-                #print (newName[:30])
-                if not os.path.exists(sorted + "/TV_shows/" + newPath):
-                    os.mkdir(sorted + "/TV_shows/" + newPath)
-                if not os.path.exists(sorted + "/TV_shows/"+newPath+"/"+ newName):
-                    shutil.move(os.path.join(subdir, file), sorted + "/TV_shows/"+newPath+"/"+newName)
-            #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
+
+                if not os.path.exists(sorted + tvfolder + newPath):
+                    os.mkdir(sorted + tvfolder + newPath)
+                if not os.path.exists(sorted + tvfolder + newPath + "/"+ newName):
+                    shutil.move(os.path.join(subdir, file), sorted + tvfolder +newPath+"/"+newName)
             else:
-                shutil.move(os.path.join(subdir, file), sorted + "/unrecognized/"+file.title())
-    for subdir, dirs, files in os.walk(sorted + "/unrecognized/"):
+                shutil.move(os.path.join(subdir, file), sorted + unsortedfolder +file.title())
+
+    #loop through the things that could not be sorted. Try to get titles preceding years and send those as
+    #requests to omdbapi.com to see if they recognize any movie or tv show titles. If so, move accordingly
+    for subdir, dirs, files in os.walk(sorted + unsortedfolder):
         for file in files:
             name = file.title()
-            #Filename strip
+            
             if yearsyntax.search(name):
                 index = yearsyntax.search(name).start()
                 name = name[:index]
@@ -80,15 +91,15 @@ def clean(downloads, sorted):
                     titletype = api(name)
                     if titletype[0] != "None":
                         if titletype[1] == "movie":
-                            if not os.path.exists(sorted + "/Movies/" + titletype[0]):
-                                shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + file.title())
+                            if not os.path.exists(sorted + moviefolder + titletype[0]):
+                                shutil.move(os.path.join(subdir, file), sorted + moviefolder + file.title())
 
                     elif titletype[1] == "series":
-                        if not os.path.exists(sorted + "/TV_shows/" + titletype[0]):
-                            shutil.move(os.path.join(subdir, file), sorted + "/TV_shows/" + file.title())
+                        if not os.path.exists(sorted + tvfolder + titletype[0]):
+                            shutil.move(os.path.join(subdir, file), sorted + tvfolder + file.title())
+
+
 def processTvShowName(name, seasons):
-    
-    #TODO: implementlll
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
     #Skila nafni skráar, nafni þáttar og seríunúmeri
     #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
@@ -103,12 +114,13 @@ def processTvShowName(name, seasons):
             name = name.replace(str(i)," ")
             arr.append(name)
     
-    #shows = re.findall(r"""(.*)[ .]S(\d{1,2})E(\d{1,2})""", name, re.VERBOSE)
-        
+
     return name.rstrip()
 
 
 def api(name):
+    #Asks omdbapi if name is the title of some known movie or tv show
+    #if so, return the title and type (movie, series...)
     url = str("http://www.omdbapi.com/?t=" + name)
 
     read_data = urllib.request.urlopen(url)
@@ -120,6 +132,4 @@ def api(name):
         api_title = load["Title"]
         api_type = load['Type']
 
-    else:
-        print('could not find tv series / movie %s' % name)
     return (api_title, api_type)
