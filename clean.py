@@ -28,54 +28,35 @@ def clean(downloads, sorted):
             elif match.search(name):
                 tvList.append(name)
                 newPath = processTvShowName(name)
-                if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
-                    shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
+                newName = " ".join(newPath.split())
+                print (newName[:30])
+                #if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
+                    #shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
         
 def processTvShowName(name):
-    #TODO: implement
+    
+    #TODO: implementlll
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
-    #Bail á þetta að ofan, Hjalti segir að slík fegrun skuli teljast aukapunktur, en ekki vera default hegðun
     #Skila nafni skráar, nafni þáttar og seríunúmeri
-    #Helst formatta skilagildi sem áframhald á pathi frá TV_shows
+    #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
+    #return name
+    take_out = [".Avi", "Zernicus", "S1", "S2", "S3" , "S4", "S5", "S6", "S7", "S8", "S9", "{ www.Torrentday.com ]", "Ws", "Pdtv", "[Skid]", "Tvrip",
+                "720P", "Aac2", "X264","Nfrip", "Hdtv", "Lol", "Asa", ".Hdtv", "Special", "W4F", "Fever",
+                "Tla", "Afg", ".[Vtv]", "Dimension", "Crimson", "Orenji", "  W4", "Aaf", ".Sample", ".Mp4", ".Reenc Max.", "-", ".", "Sample", "Ftp", "Reenc",
+                "Max", "Mkv", "Ange", "Xvid", 'Uncut', "2Hd", "Fqm", "C4T", "Tvchaos", "Benidor", "2H", "M4V", "Fqm", "Slowap", "Evolve",
+                "_", "Fov", "Immerse"]
+    
+    for value in take_out:
+        name = name.replace(value," ")
+    for i in range(1950, 2050):
+        if str(i) in name:
+            name = name.replace(str(i)," ")
+     
+    #name=name.lstrip()
+    #name=name.rstrip()
+
     return name
 
-
-
-#
-    # def main(mypath, destination):
-    # myndir = []
-    # listi = []
-    # strengur = ''
-
-    # for (dirpath, dirnames, filenames) in os.walk(mypath):
-    #     myndir.extend(filenames)
-    #     break
-
-    ##    for l in myndir:
-    ##        print (l)
-    ##
-    # print(myndir)
-
-    # name = "12 Years a Slave"
-    # year = 0
-    # if year != 0:
-     #    url = "http://www.omdbapi.com/?t=" + name + "&y=" + str(year)
-    # else:
-     #    url = "http://www.omdbapi.com/?t=" + name
-
-    # url_values = json.loads(urllib.urlopen(url).read())
-
-
-
-# Fá nafn á mynd/þætti
-# fara í gegnum allar undir möppur
-# Leita í omdbapi að nafninu með search string
-# skoða "Type": "series" / "Type": "movies"
-# ef bíó mynd setja skránna inn í ../temp/movies
-# ef sjónvarpsþáttur setja skránna inn í ( ../temp/series/[SHOW_NAME]/[SEASON_NUMBER]/[episode] )
-
-
-# ef skrá ekki lesanleg þá má eyða henni (aka .jpg , .rar, .zip)
