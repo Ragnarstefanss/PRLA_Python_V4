@@ -13,7 +13,8 @@ def clean(downloads, sorted):
                                "\.[Pp]ar[t\d*]|\.[Ss]vf|\.[Ss]fv|\.[Mm]ta|\.[Tt]xt|\.[Ww]av))[Ss]?\d{1,2}x?[Ee]?[^\d\._ -]\d{1,3}")
             if match.search(name):
                 tvList.append(name)
-                shutil.move(os.path.join(subdir, file), "/Users/kristinn/PycharmProjects/PRLA/PRLA_Python_V4/sorted/TV_shows/")
+                if not os.path.exists("/Users/kristinn/PycharmProjects/PRLA/PRLA_Python_V4/sorted/TV_shows/"+name):
+                    shutil.move(os.path.join(subdir, file), "/Users/kristinn/PycharmProjects/PRLA/PRLA_Python_V4/sorted/TV_shows/")
     for show in tvList:
         print(show)
     return
