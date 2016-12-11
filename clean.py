@@ -26,7 +26,7 @@ def clean(downloads, sorted):
 
     foldersyntax = re.compile("[Ss]eason[\. -]{0,1}\d{1,2}")
 
-    yearsyntax = re.compile("[\[\]\.( -]{0,2}\d{4}")
+    yearsyntax = re.compile("[\[\.( -]{0,2}\d{4}")
 
     tvfolder = "/TV_shows/"
     audiofolder = "/Audio/"
@@ -93,9 +93,9 @@ def clean(downloads, sorted):
                             if not os.path.exists(sorted + moviefolder + titletype[0]):
                                 shutil.move(os.path.join(subdir, file), sorted + moviefolder + file.title())
 
-                    elif titletype[1] == "series":
-                        if not os.path.exists(sorted + tvfolder + titletype[0]):
-                            shutil.move(os.path.join(subdir, file), sorted + tvfolder + file.title())
+                        if titletype[1] == "series":
+                            if not os.path.exists(sorted + tvfolder + titletype[0]):
+                                shutil.move(os.path.join(subdir, file), sorted + tvfolder + file.title())
 
 
 def processTvShowName(name):
