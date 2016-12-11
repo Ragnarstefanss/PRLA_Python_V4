@@ -41,12 +41,12 @@ def clean(downloads, sorted):
                 print(index)
                 tvList.append(name)
                 newPath = processTvShowName(name[:index], name[index:endindex])
-                newName = name[:endindex]
+                newName = name
                 #print (newName[:30])
                 if not os.path.exists(downloads + "/../sorted/TV_shows/" + newPath):
                     os.mkdir(downloads + "/../sorted/TV_shows/" + newPath)
-                if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath+newName):
-                    shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath+newName)
+                if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath+"/"+ newName):
+                    shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath+"/"+newName)
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
