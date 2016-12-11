@@ -46,15 +46,16 @@ def processTvShowName(name):
     take_out = [".Avi", "Zernicus", "S1", "S2", "S3" , "S4", "S5", "S6", "S7", "S8", "S9", "{ www.Torrentday.com ]", "Ws", "Pdtv", "[Skid]", "Tvrip",
                 "720P", "Aac2", "X264","Nfrip", "Hdtv", "Lol", "Asa", ".Hdtv", "Special", "W4F", "Fever",
                 "Tla", "Afg", ".[Vtv]", "Dimension", "Crimson", "Orenji", "  W4", "Aaf", ".Sample", ".Mp4", ".Reenc Max.", "-", ".", "Sample", "Ftp", "Reenc",
-                "Max", "Mkv", "Ange", "Xvid", 'Uncut', "2Hd", "Fqm", "C4T", "Tvchaos", "Benidor", "2H", "M4V", "Fqm", "Slowap", "Evolve",
-                "_", "Fov", "Immerse"]
+                "Max", "Mkv", "Ange", "angelic", "Xvid", 'Uncut', "2Hd", "Fqm", "C4T", "Tvchaos", "Benidor", "2H", "M4V", "Fqm", "Slowap", "Evolve",
+                "_", "Fov", "Immerse", "Cbm", "Srt", "Killers", "Fum"]
     
     for value in take_out:
         name = name.replace(value," ")
     for i in range(1950, 2050):
         if str(i) in name:
             name = name.replace(str(i)," ")
-     
+
+
     #name=name.lstrip()
     #name=name.rstrip()
 
