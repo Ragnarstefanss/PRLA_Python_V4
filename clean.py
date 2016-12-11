@@ -9,16 +9,29 @@ def clean(downloads, sorted):
     for subdir, dirs, files in os.walk(downloads):
         for file in files:
             name = file.title()
-            match = re.compile("(?!.*(\.[Jj]pg|\.[Rr]ar|\.[Zz]ip|\.[Mm]p3|\.[Ii]gnore|\.[Nn]fo|.[R]\d{1,3}|\.[Dd]at|\.[Pp]ng|\.[Ll]nk|"
-                               "\.[Pp]ar[t\d*]|\.[Ss]vf|\.[Ss]fv|\.[Mm]ta|\.[Tt]xt|\.[Ww]av))[Ss]?\d{1,2}x?[Ee]?[^\d\._ -]\d{1,3}")
+            #Simplify regex if time allows for it
+            match = re.compile("(?!.*(\.[Jj]pg$|\.[Rr]ar$|\.[Zz]ip$|\.[Mm]p3$|\.[Ii]gnore$|\.[Nn]fo$|.[R]\d{1,3}$|\.[Dd]at$|"
+                               "\.[Pp]ng$|\.[Ll]nk$|\.[Pp]ar[t\d*]$|\.[Ss]vf$|\.[Ss]fv$|\.[Mm]ta$|\.[Tt]xt$|"
+                               "\.[Ww]av$))(\d{1,2}[Xx]\d{1,2}|\[\d{1,3}\.\d{1,3}\]|[Ee][Pp]\d{1,3}|- \d{2} -|- \d{2,3}|"
+                               "\.\d{3}\.|[Ss]\d{1,3} [Ee] {0,1}\d{1,3}|[\. ]{0,1}[Pp]ilot[\. ]{0,1}]|"
+                               "[Ss]eason {0,1}\d{1,2}[ -]{1,3}[Ee]pisode {0,1}\d{1,2}|#\d{1,3}|[Ss]\d{1,2}.([Ee]xtra)?([Ss]pecial)?)")
             match1 = re.compile("\.Part$")
-            if match.search(name):
+            match2 = re.compile("\.[Jj]pg|\.[Rr]ar|\.[Zz]ip|\.[Ii]gnore|\.[Nn]fo|.[R]\d{1,3}|\.[Dd]at|\.[Pp]ng|\.[Ll]nk|\.[Ss]vf|\.[Ss]fv|\.[Mm]ta|"
+                                "\.[Tt]xt|\.[Ss]tyle|\.[Tt]orrent")
+            match3 = re.compile("\.[Mm]p3$|\.[Ww]av$")
+
+            if match2.search(name):
+                os.remove(os.path.join(subdir, file))
+            elif match1.search(name):
+                continue
+            elif match3.search(name):
+                shutil.move(os.path.join(subdir, file), downloads + "/../sorted/audio/"+file.title())
+            elif match.search(name):
                 tvList.append(name)
                 newPath = processTvShowName(name)
                 if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
                     shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
-            elif match1.search(name):
-                continue
+            #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
     for show in tvList:
@@ -28,7 +41,7 @@ def clean(downloads, sorted):
 def processTvShowName(name):
     #TODO: implement
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
-    #Skila nafni skráar fegruðu, nafni þáttar og seríunúmeri
+    #Skila nafni skráar, nafni þáttar og seríunúmeri
     #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
     return name
 
