@@ -27,6 +27,8 @@ def clean(downloads, sorted):
 
     foldersyntax = re.compile("[Ss]eason[\. -]{0,1}\d{1,2}")
 
+    yearsyntax = re.compile("[\[\]\. -]{0,2}\d{4}")
+
     for subdir, dirs, files in os.walk(downloads):
         for dir in dirs:
             folder = dir.title()
@@ -68,12 +70,13 @@ def clean(downloads, sorted):
         for file in files:
             name = file.title()
             #Filename strip
-
-            titletype = api(name)
-            if titletype[0] != "None":
-                if titletype[1] == "movie":
-                    if not os.path.exists(sorted + "/Movies/" + titletype[0]):
-                        shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + titletype[0])
+            if yearsyntax.search(name):
+                index = yearsyntax.search(name).start()
+                titletype = api(name[:index])
+                if titletype[0] != "None":
+                    if titletype[1] == "movie":
+                        if not os.path.exists(sorted + "/Movies/" + titletype[0]):
+                            shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + titletype[0])
 
 def processTvShowName(name, seasons):
     
