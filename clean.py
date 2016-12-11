@@ -59,16 +59,8 @@ def processTvShowName(name, seasons):
     #Endurformatta nafn þáttar til að losna við punkta og strik og slíkt úr nafni, nafn = allt á undan S01E01 etc.
     #Skila nafni skráar, nafni þáttar og seríunúmeri
     #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
-    #return name
-
-
-    #take_out = ["-angelic", ".Avi", "Zernicus", "{ www.Torrentday.com ]", "Ws", "Pdtv", "[Skid]", "Tvrip","720P", "Aac2", "X264","Nfrip",
-     #           "Hdtv", "Lol", "Asa", ".Hdtv", "Special", "W4F", "Fever",
-      #          "Tla", "Afg", ".[Vtv]", "Dimension", "Crimson", "Orenji", "  W4", "Aaf", ".Sample", ".Mp4", ".Reenc Max.", "-", ".", "Sample", "Ftp", "Reenc",
-       #         "Max", "Mkv", "Ange", "Xvid", 'Uncut', "2Hd", "Fqm", "C4T", "Tvchaos", "Benidor", "2H", "M4V", "Fqm", "Slowap", "Evolve",
-        #        "_", "Fov", "Immerse", "Cbm", "Srt", "Killers", "Fum", "[Bia]", "[ ]", "P0W4", "Bia"]
     
-    take_out = ["_", "[", "]", "."]
+    take_out = ["_", "[", "]", ".", " -"]
     arr = []
     for value in take_out:
         name = name.replace(value," ")
@@ -78,27 +70,7 @@ def processTvShowName(name, seasons):
             name = name.replace(str(i)," ")
             arr.append(name)
     
-    shows = re.findall(r"""(.*)[ .]S(\d{1,2})E(\d{1,2})""", name, re.VERBOSE)
-    #print(shows)
-
-    name1 = "Sherlock"
-    url = str("http://www.omdbapi.com/?t="+name1)
-    dada_listi = []
-
-    read_data = urllib.request.urlopen(url)
-    load = json.loads(read_data.read().decode(read_data.info().get_param('charset') or 'utf-8'))
-    
-    if load["Response"]=="True":
-        api_title = load["Title"]
-        api_type = load['Type']
+    #shows = re.findall(r"""(.*)[ .]S(\d{1,2})E(\d{1,2})""", name, re.VERBOSE)
         
-        dada_listi.append(api_title)
-        dada_listi.append(api_type)
-    else:
-        print ('could not find tv series / movie %s' % name1)
-
-    #if dada_listi != []:
-    #    print (dada_listi)
-        
-    return name
+    return name.rstrip()
 
