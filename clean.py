@@ -26,7 +26,7 @@ def processTvShowName(name):
     #Skila nafni skráar fegruðu, nafni þáttar og seríunúmeri
     #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
     return name
-    
+
 
 
 #
