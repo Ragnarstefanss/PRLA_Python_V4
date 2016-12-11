@@ -51,8 +51,8 @@ def clean(downloads, sorted):
             elif episodesyntax.search(name):
                 index = episodesyntax.search(name).start()
                 endindex = episodesyntax.search(name).end()
-                print(name)
-                print(index)
+                #print(name)
+                #print(index)
                 tvList.append(name)
                 newPath = processTvShowName(name[:index], name[index:endindex])
                 newName = name
@@ -64,8 +64,16 @@ def clean(downloads, sorted):
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), sorted + "/unrecognized/"+file.title())
-    #for subdir, dirs, files in os.walk(sorted + "/unrecognized/"):
-     #   for file in files:
+    for subdir, dirs, files in os.walk(sorted + "/unrecognized/"):
+        for file in files:
+            name = file.title()
+            #Filename strip
+
+            titletype = api(name)
+            if titletype[0] != "None":
+                if titletype[1] == "movie":
+                    if not os.path.exists(sorted + "/Movies/" + titletype[0]):
+                        shutil.move(os.path.join(subdir, file), sorted + "/Movies/" + titletype[0])
 
 def processTvShowName(name, seasons):
     

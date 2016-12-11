@@ -7,6 +7,7 @@ if os.path.exists("downloads"):
 if os.path.exists("sorted"):
     shutil.rmtree("sorted")
 os.makedirs("sorted")
+os.makedirs("sorted/Movies")
 os.makedirs("sorted/TV_shows")
 os.makedirs("sorted/unrecognized")
 os.makedirs("sorted/audio")
