@@ -12,6 +12,12 @@ def clean(downloads, sorted):
     for subdir, dirs, files in os.walk(downloads):
         for file in files:
             name = file.title()
+            #wow, so read. very understand
+            #Regular expressions, in order of execution, for: files with extensions that are to be deleted,
+            #.Part files, which are partial downloads and are therefore to be left alone
+            #Files in audio formats, to be moved to sorted/audio
+            #Files containing S01E01 or similar episodic syntax denoting that it is part of a series, to be put into sorted/TV_shows
+            #Files not matching any of these will be put into sorted/unrecognized
             match = re.compile("(?!.*(\.[Jj]pg$|\.[Rr]ar$|\.[Zz]ip$|\.[Mm]p3$|\.[Ii]gnore$|\.[Nn]fo$|.[R]\d{1,3}$|\.[Dd]at$|"
                                "\.[Pp]ng$|\.[Ll]nk$|\.[Pp]ar[t\d*]$|\.[Ss]vf$|\.[Ss]fv$|\.[Mm]ta$|\.[Tt]xt$|"
                                "\.[Ww]av$))(\d{1,2}[Xx]\d{1,2}|\[\d{1,3}\.\d{1,3}\]|[Ee][Pp]\d{1,3}|- \d{2} -|- \d{2,3}|"
@@ -60,7 +66,7 @@ def processTvShowName(name):
     for value in take_out:
         name = name.replace(value," ")
         arr.append(name)
-    for i in range(1950, 2050):
+    for i in range(1920, 2050):
         if str(i) in name:
             name = name.replace(str(i)," ")
             arr.append(name)

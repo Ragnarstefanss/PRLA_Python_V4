@@ -1,5 +1,5 @@
 This project is stored in the github repo "https://github.com/kristinnjoh14/PRLA_Python_V4.git"
 
-Once the repo is cloned or otherwise obtained, you simply need to run testV4.py to set everything up and run the clean script. If you wish to set everything up without running the clean command, run setup.py instead. The resulting file "downloads" will contain the raw data and the resulting file "sorted" will contain the output of the clean script.
+Once the repo is cloned or otherwise obtained, you simply need to run testV4.py, which will both set everything up and run the clean script. If you wish to set everything up without running the clean command, run setup.py instead. The resulting file "downloads" will contain the raw data and the resulting file "sorted" will contain the output of the clean script, once it has been run.
 
 In implementing this project, no external modules were used.
