@@ -1,0 +1,1 @@
+Now that you've cloned the repo, you simply need to run testV4 to set everything up and run the clean script. If you wish to set everything up, simply comment out the lines that execute clean(downloads, sorted) or unZip downloads yourself and create an empty folder called sorted.
