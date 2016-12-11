@@ -36,14 +36,18 @@ def clean(downloads, sorted):
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/audio/"+file.title())
             elif match.search(name):
                 tvList.append(name)
-                newPath = processTvShowName(name)
-                newName = " ".join(newPath.split())
+                newPath = name
+                newName = "/" + name
                 #print (newName[:30])
-                #if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
-                    #shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
+                if not os.path.exists(downloads + "/../sorted/TV_shows/" + newPath):
+                    os.mkdir(downloads + "/../sorted/TV_shows/" + newPath)
+                if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath+newName):
+                    shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath+newName)
             #Setja inn ombd dótið til að filtera út kvikmyndir og setja þær í sér möppu
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
+    for show in tvList:
+        print(show)
         
 def processTvShowName(name):
     
@@ -53,8 +57,7 @@ def processTvShowName(name):
     #Helst formatta skilagildi sem enda áframhald á pathi frá TV_shows
     #return name
 
-        
-   
+
     #take_out = ["-angelic", ".Avi", "Zernicus", "{ www.Torrentday.com ]", "Ws", "Pdtv", "[Skid]", "Tvrip","720P", "Aac2", "X264","Nfrip",
      #           "Hdtv", "Lol", "Asa", ".Hdtv", "Special", "W4F", "Fever",
       #          "Tla", "Afg", ".[Vtv]", "Dimension", "Crimson", "Orenji", "  W4", "Aaf", ".Sample", ".Mp4", ".Reenc Max.", "-", ".", "Sample", "Ftp", "Reenc",
