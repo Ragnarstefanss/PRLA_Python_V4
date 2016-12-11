@@ -29,8 +29,8 @@ def clean(downloads, sorted):
     yearsyntax = re.compile("[\[\]\.( -]{0,2}\d{4}")
 
     tvfolder = "/TV_shows/"
-    audiofolder = "/audio/"
-    unsortedfolder = "/unrecognized/"
+    audiofolder = "/Audio/"
+    unsortedfolder = "/Unrecognized/"
     moviefolder = "/Movies/"
 
     #loop through the folders, if any look like they contain whole seasons, move them, as they are, accordingly
@@ -63,7 +63,6 @@ def clean(downloads, sorted):
 
             elif episodesyntax.search(name):
                 index = episodesyntax.search(name).start()
-                endindex = episodesyntax.search(name).end()
                 tvList.append(name)
                 newPath = processTvShowName(name[:index])
                 newName = name
