@@ -11,11 +11,14 @@ def clean(downloads, sorted):
             name = file.title()
             match = re.compile("(?!.*(\.[Jj]pg|\.[Rr]ar|\.[Zz]ip|\.[Mm]p3|\.[Ii]gnore|\.[Nn]fo|.[R]\d{1,3}|\.[Dd]at|\.[Pp]ng|\.[Ll]nk|"
                                "\.[Pp]ar[t\d*]|\.[Ss]vf|\.[Ss]fv|\.[Mm]ta|\.[Tt]xt|\.[Ww]av))[Ss]?\d{1,2}x?[Ee]?[^\d\._ -]\d{1,3}")
+            match1 = re.compile("\.Part$")
             if match.search(name):
                 tvList.append(name)
                 newPath = processTvShowName(name)
                 if not os.path.exists(downloads + "/../sorted/TV_shows/"+newPath):
                     shutil.move(os.path.join(subdir, file), downloads + "/../sorted/TV_shows/"+newPath)
+            elif match1.search(name):
+                continue
             else:
                 shutil.move(os.path.join(subdir, file), downloads + "/../sorted/unrecognized/"+file.title())
     for show in tvList:
